@@ -8,6 +8,7 @@ public class Main {
 		// TODO Auto-generated method stub
 		final String MESSAGE_TITLES = "Enter movie titles: ";
 		final String MESSAGE_IGNORE = "Enter words to ignore: ";
+		final String MESSAGE_REQUIRED = "Enter words required: ";
 		
 		Scanner sc = new Scanner(System.in);
 		
@@ -28,6 +29,18 @@ public class Main {
 				ignoreWords.addIgnoreWords(ignoreWordsArr[i]);
 			}
 			inputIgnore = sc.nextLine();
+		}
+		
+		//KWIC Extension
+		System.out.println(MESSAGE_REQUIRED);
+		String inputRequired = sc.nextLine();
+		RequiredWords requiredWords = RequiredWords.getRequiredWords();
+		while(!inputRequired.isEmpty()){
+			String[] requiredWordsArr = inputRequired.split(", ");
+			for(int i = 0; i < requiredWordsArr.length; i++){
+				requiredWords.addRequiredWords(requiredWordsArr[i]);
+			}
+			inputRequired = sc.nextLine();
 		}
 		
 		AlphabeticShift alphabeticShift = new AlphabeticShift();

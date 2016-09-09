@@ -6,11 +6,13 @@ public class CircularShift {
 
 	private String title;
 	private IgnoreWords ignoreWord;
+	private RequiredWords requiredWord;
 	
 	public CircularShift(String input){
 		if(input != null);
 		this.title = input.toLowerCase();
 		this.ignoreWord = IgnoreWords.getIgnoreWords();
+		this.requiredWord = RequiredWords.getRequiredWords();
 	}
 	
 	public String[] getCircularShift(){
@@ -23,11 +25,19 @@ public class CircularShift {
 		}
 		
 		String[] filterShiftedTitle = getShiftedTitleWithoutIgnoreWords(shiftedTitle);
+		String[] filterShiftedRequiredTitle = getShiftedTitleWithRequiredWords(filterShiftedTitle);
+		/*
 		for(int i = 0; i < filterShiftedTitle.length; i++){
 			filterShiftedTitle[i] = maintainCapitalization(filterShiftedTitle[i]);
 		}
 		
-		return filterShiftedTitle;
+		return filterShiftedTitle;*/
+		
+		for(int i = 0; i < filterShiftedRequiredTitle.length; i++){
+			filterShiftedRequiredTitle[i] = maintainCapitalization(filterShiftedRequiredTitle[i]);
+		}
+		
+		return filterShiftedRequiredTitle;
 	}
 	
 	private String getShiftedTitle(int index, String[] inputArr){
@@ -55,6 +65,21 @@ public class CircularShift {
 		while(itr.hasNext()){
 			String firstWord = itr.next().split(" ")[0];
 			if(this.ignoreWord.isIgnoreWords(firstWord)){
+				itr.remove();
+			}
+		}
+		
+		return shiftedTitleList.toArray(new String[shiftedTitleList.size()]);
+	}
+	
+	//KIWC Extension
+	private String[] getShiftedTitleWithRequiredWords(String[] inputArr){
+		List<String> shiftedTitleList = new ArrayList<String>(Arrays.asList(inputArr));
+		
+		Iterator<String> itr = shiftedTitleList.iterator();
+		while(itr.hasNext()){
+			String firstWord = itr.next().split(" ")[0];
+			if(!this.requiredWord.isRequiredWords(firstWord)){
 				itr.remove();
 			}
 		}
